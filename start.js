@@ -1,16 +1,18 @@
 const { execSync } = require('child_process');
 
-const appType = (process.env.APP_TYPE || 'voyage').toLowerCase().trim();
+// Default to 'excellere' if not specified, since that's what we are working on now
+const appType = (process.env.APP_TYPE || 'excellere').toLowerCase().trim();
 console.log(`[Launcher] Starting app with APP_TYPE: "${appType}"`);
 
 let command = '';
 
-if (appType === 'excellere') {
-    console.log('[Launcher] Selecting Excellere MCP...');
-    command = 'cd excellere_mcp && node index.js';
-} else {
-    console.log('[Launcher] Selecting Voyage OS (Default)...');
+if (appType === 'voyage') {
+    console.log('[Launcher] Selecting Voyage OS...');
     command = 'cd travel_mcp && node index.js';
+} else {
+    // Default case is now Excellere
+    console.log('[Launcher] Selecting Excellere MCP (Default)...');
+    command = 'cd excellere_mcp && node index.js';
 }
 
 try {
