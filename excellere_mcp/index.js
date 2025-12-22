@@ -52,7 +52,7 @@ mcp.tool(
                 key: z.string(),
                 width: z.number().optional()
             })).describe("Column definitions"),
-            rows: z.array(z.any()).describe("Data rows"),
+            rows: z.array(z.record(z.any())).describe("Data rows (array of objects where keys match column keys)"),
             styles: z.array(z.object({
                 range: z.string().describe("Cell range (e.g., 'A1:C1')"),
                 bold: z.boolean().optional(),
