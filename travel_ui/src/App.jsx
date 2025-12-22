@@ -33,24 +33,24 @@ const MOCK_DESTINATIONS = [
 // --- Translations ---
 const TRANSLATIONS = {
   en: {
-    title: "Voyage OS",
-    subtitle: "Your Personal AI Travel Architect",
+    title: "WanderFlow",
+    subtitle: "Your Journey, Perfectly Flowing.",
     tabs: { inspire: "Inspire", plan: "Plan", saved: "Saved" },
     noSaved: "No saved trips yet.",
-    planTitle: "Design Your Journey",
-    planDesc: "Tell me your dreams, budget, and style. I'll architect the perfect itinerary.",
+    planTitle: "Start Your Flow",
+    planDesc: "Tell me your dreams, budget, and style. I'll craft the perfect flow.",
     placeholder: "e.g. 10 days in Patagonia, adventure & luxury...",
-    goBtn: "Architect Trip"
+    goBtn: "Start Flow"
   },
   it: {
-    title: "Voyage OS",
-    subtitle: "Il Tuo Architetto di Viaggi AI Personale",
+    title: "WanderFlow",
+    subtitle: "Il Tuo Viaggio, Flusso Perfetto.",
     tabs: { inspire: "Ispirami", plan: "Pianifica", saved: "Salvati" },
     noSaved: "Nessun viaggio salvato.",
-    planTitle: "Progetta il Tuo Viaggio",
-    planDesc: "Raccontami i tuoi sogni, budget e stile. Creerò l'itinerario perfetto.",
+    planTitle: "Inizia il Flusso",
+    planDesc: "Raccontami i tuoi sogni, budget e stile. Creerò il flusso perfetto.",
     placeholder: "es. 10 giorni in Patagonia, avventura e lusso...",
-    goBtn: "Crea Itinerario"
+    goBtn: "Crea Flusso"
   }
 };
 

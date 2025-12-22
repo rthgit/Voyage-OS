@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "../travel_ui/dist")));
 
 // --- MCP Server Setup ---
 const mcp = new McpServer({
-    name: "Voyage OS",
+    name: "WanderFlow",
     version: "1.0.0",
 });
 
@@ -34,10 +34,10 @@ const mcp = new McpServer({
 // Tool 1: Search Destinations
 mcp.tool(
     "search_destinations",
-    z.object({
+    {
         query: z.string().describe("The destination or type of vacation to search for (e.g., 'beaches in Italy')"),
         budget_level: z.enum(["low", "medium", "high", "luxury"]).optional().describe("Budget preference"),
-    }),
+    },
     async ({ query, budget_level }) => {
         console.log(`[Tool] Searching for: ${query}, Budget: ${budget_level || "Any"}`);
 
