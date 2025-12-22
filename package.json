@@ -3,8 +3,8 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "postinstall": "cd travel_mcp && npm install && cd ../excellere_mcp && npm install",
-        "start": "node -e \"const { execSync } = require('child_process'); const app = process.env.APP_TYPE === 'excellere' ? 'excellere_mcp' : 'travel_mcp'; execSync('cd ' + app + ' && node index.js', { stdio: 'inherit' });\"",
+        "postinstall": "cd travel_mcp && npm install && cd ../excellere_mcp && npm install && cd ../excellere_ui && npm install && npm run build:excellere",
+        "start": "node start.js",
         "start:voyage": "cd travel_mcp && node index.js",
         "start:excellere": "cd excellere_mcp && node index.js",
         "install:voyage": "cd travel_mcp && npm install && cd ../travel_ui && npm install",
