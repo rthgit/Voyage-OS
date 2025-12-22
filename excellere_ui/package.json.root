@@ -1,0 +1,9 @@
+{
+  "name": "excellere-root",
+  "version": "1.0.0",
+  "scripts": {
+    "dev:mcp": "cd excellere_mcp && node index.js",
+    "dev:ui": "cd excellere_ui && npm run dev",
+    "install:all": "cd excellere_mcp && npm install && cd ../excellere_ui && npm install"
+  }
+}

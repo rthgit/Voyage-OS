@@ -1,0 +1,21 @@
+{
+  "name": "excellere_mcp",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.5.0",
+    "cors": "^2.8.5",
+    "crypto": "^1.0.1",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "zod": "^3.24.2"
+  }
+}

@@ -3,3 +3,4 @@ node_modules
 .DS_Store
 dist
 !travel_ui/dist
+!excellere_ui/dist

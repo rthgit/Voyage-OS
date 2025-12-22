@@ -1,10 +1,14 @@
 {
-    "name": "voyage-os-root",
+    "name": "rth-apps-suite",
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "install": "cd travel_mcp && npm install",
-        "start": "cd travel_mcp && node index.js"
+        "start:voyage": "cd travel_mcp && node index.js",
+        "start:excellere": "cd excellere_mcp && node index.js",
+        "install:voyage": "cd travel_mcp && npm install && cd ../travel_ui && npm install",
+        "install:excellere": "cd excellere_mcp && npm install && cd ../excellere_ui && npm install",
+        "build:voyage": "cd travel_ui && npm run build",
+        "build:excellere": "cd excellere_ui && npm run build"
     },
     "engines": {
         "node": "18.x"
