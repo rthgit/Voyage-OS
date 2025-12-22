@@ -1,0 +1,14 @@
+{
+  "name": "openai-agent-lab",
+  "version": "1.0.0",
+  "description": "Test project for OpenAI Agents SDK",
+  "main": "triage_agent.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node triage_agent.mjs"
+  },
+  "dependencies": {
+    "openai": "^4.0.0",
+    "@openai/agents": "latest"
+  }
+}
