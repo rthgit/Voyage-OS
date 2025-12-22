@@ -33,7 +33,7 @@ const MOCK_DESTINATIONS = [
 // --- Translations ---
 const TRANSLATIONS = {
   en: {
-    title: "RTH Synapse Voyage Architect",
+    title: "RTH Synapse Voyage 777",
     subtitle: "Advanced AI Travel Engineering",
     tabs: { inspire: "Inspire", plan: "Architect", saved: "Vault" },
     noSaved: "No archived voyages.",
@@ -43,7 +43,7 @@ const TRANSLATIONS = {
     goBtn: "Generate Architecture"
   },
   it: {
-    title: "RTH Synapse Voyage Architect",
+    title: "RTH Synapse Voyage 777",
     subtitle: "Ingegneria di Viaggio AI Avanzata",
     tabs: { inspire: "Ispirazione", plan: "Architetto", saved: "Archivio" },
     noSaved: "Nessun viaggio archiviato.",
