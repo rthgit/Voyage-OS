@@ -33,24 +33,24 @@ const MOCK_DESTINATIONS = [
 // --- Translations ---
 const TRANSLATIONS = {
   en: {
-    title: "RTH Synapse Voyage 777",
-    subtitle: "Advanced AI Travel Engineering",
-    tabs: { inspire: "Inspire", plan: "Architect", saved: "Vault" },
-    noSaved: "No archived voyages.",
-    planTitle: "Initialize Architecture",
-    planDesc: "Input your parameters: destination, budget, and style. I will architect the optimal flow.",
-    placeholder: "e.g. 14 days in Japan, cultural immersion & luxury...",
-    goBtn: "Generate Architecture"
+    title: "Voyage OS",
+    subtitle: "Your Personal AI Travel Architect",
+    tabs: { inspire: "Inspire", plan: "Plan", saved: "Saved" },
+    noSaved: "No saved trips yet.",
+    planTitle: "Start Your Journey",
+    planDesc: "Tell me your dreams, budget, and style. I'll craft the perfect itinerary.",
+    placeholder: "e.g. 10 days in Japan, cultural immersion & luxury...",
+    goBtn: "Start Planning"
   },
   it: {
-    title: "RTH Synapse Voyage 777",
-    subtitle: "Ingegneria di Viaggio AI Avanzata",
-    tabs: { inspire: "Ispirazione", plan: "Architetto", saved: "Archivio" },
-    noSaved: "Nessun viaggio archiviato.",
-    planTitle: "Inizializza Architettura",
-    planDesc: "Inserisci i parametri: destinazione, budget e stile. Progetterò il flusso ottimale.",
-    placeholder: "es. 14 giorni in Giappone, immersione culturale e lusso...",
-    goBtn: "Genera Architettura"
+    title: "Voyage OS",
+    subtitle: "Il Tuo Architetto di Viaggio AI",
+    tabs: { inspire: "Ispirami", plan: "Pianifica", saved: "Salvati" },
+    noSaved: "Nessun viaggio salvato.",
+    planTitle: "Inizia il Viaggio",
+    planDesc: "Raccontami i tuoi sogni, budget e stile. Creerò l'itinerario perfetto.",
+    placeholder: "es. 10 giorni in Giappone, immersione culturale e lusso...",
+    goBtn: "Crea Piano"
   }
 };
 
