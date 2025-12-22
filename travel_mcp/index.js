@@ -5,6 +5,7 @@ import { fileURLToPath } from "url";
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { z } from "zod";
+import crypto from "crypto";
 
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
