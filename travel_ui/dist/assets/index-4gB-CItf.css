@@ -1,0 +1,1 @@
+@tailwind base;@tailwind components;@tailwind utilities;body{background-color:#0f172a;color:#f8fafc;font-family:Inter,sans-serif}.glass-card{background:#ffffff0d;-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.1);border-radius:1rem}
