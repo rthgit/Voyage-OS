@@ -25,7 +25,7 @@ app.use(express.static(path.join(__dirname, "../travel_ui/dist")));
 
 // --- MCP Server Setup ---
 const mcp = new McpServer({
-    name: "WanderFlow",
+    name: "RTH Synapse Voyage Architect",
     version: "1.0.0",
 });
 

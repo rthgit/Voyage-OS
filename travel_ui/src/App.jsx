@@ -33,24 +33,24 @@ const MOCK_DESTINATIONS = [
 // --- Translations ---
 const TRANSLATIONS = {
   en: {
-    title: "WanderFlow",
-    subtitle: "Your Journey, Perfectly Flowing.",
-    tabs: { inspire: "Inspire", plan: "Plan", saved: "Saved" },
-    noSaved: "No saved trips yet.",
-    planTitle: "Start Your Flow",
-    planDesc: "Tell me your dreams, budget, and style. I'll craft the perfect flow.",
-    placeholder: "e.g. 10 days in Patagonia, adventure & luxury...",
-    goBtn: "Start Flow"
+    title: "RTH Synapse Voyage Architect",
+    subtitle: "Advanced AI Travel Engineering",
+    tabs: { inspire: "Inspire", plan: "Architect", saved: "Vault" },
+    noSaved: "No archived voyages.",
+    planTitle: "Initialize Architecture",
+    planDesc: "Input your parameters: destination, budget, and style. I will architect the optimal flow.",
+    placeholder: "e.g. 14 days in Japan, cultural immersion & luxury...",
+    goBtn: "Generate Architecture"
   },
   it: {
-    title: "WanderFlow",
-    subtitle: "Il Tuo Viaggio, Flusso Perfetto.",
-    tabs: { inspire: "Ispirami", plan: "Pianifica", saved: "Salvati" },
-    noSaved: "Nessun viaggio salvato.",
-    planTitle: "Inizia il Flusso",
-    planDesc: "Raccontami i tuoi sogni, budget e stile. Creerò il flusso perfetto.",
-    placeholder: "es. 10 giorni in Patagonia, avventura e lusso...",
-    goBtn: "Crea Flusso"
+    title: "RTH Synapse Voyage Architect",
+    subtitle: "Ingegneria di Viaggio AI Avanzata",
+    tabs: { inspire: "Ispirazione", plan: "Architetto", saved: "Archivio" },
+    noSaved: "Nessun viaggio archiviato.",
+    planTitle: "Inizializza Architettura",
+    planDesc: "Inserisci i parametri: destinazione, budget e stile. Progetterò il flusso ottimale.",
+    placeholder: "es. 14 giorni in Giappone, immersione culturale e lusso...",
+    goBtn: "Genera Architettura"
   }
 };
 
