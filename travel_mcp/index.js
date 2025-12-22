@@ -33,13 +33,13 @@ const mcp = new McpServer({
 
 // Tool 1: Search Destinations
 mcp.tool(
-    "search_destinations",
+    "voyage_search",
     {
-        query: z.string().describe("The destination or type of vacation to search for (e.g., 'beaches in Italy')"),
-        budget_level: z.enum(["low", "medium", "high", "luxury"]).optional().describe("Budget preference"),
+        query: z.string().describe("La destinazione o il tipo di vacanza da cercare (es. 'spiagge in Italia', 'montagna in Francia')"),
+        budget_level: z.enum(["low", "medium", "high", "luxury"]).optional().describe("Livello di budget preferito"),
     },
     async ({ query, budget_level }) => {
-        console.log(`[Tool] Searching for: ${query}, Budget: ${budget_level || "Any"}`);
+        console.log(`[✨ Voyage OS ✨] Searching for: ${query}, Budget: ${budget_level || "Any"}`);
 
         const mockResults = [
             {
