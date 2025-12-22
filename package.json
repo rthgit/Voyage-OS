@@ -1,0 +1,12 @@
+{
+    "name": "voyage-os-root",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "install": "cd travel_mcp && npm install",
+        "start": "cd travel_mcp && node index.js"
+    },
+    "engines": {
+        "node": "18.x"
+    }
+}
