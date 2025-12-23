@@ -159,17 +159,26 @@ mcp.tool(
 const transports = new Map();
 
 app.get("/sse", async (req, res) => {
-    console.log("[MyPDF] New SSE connection");
-    const transport = new SSEServerTransport("/messages", res);
-    await mcp.connect(transport);
+    console.log("[MyPDF] New SSE connection attempt");
+    try {
+        const transport = new SSEServerTransport("/messages", res);
+        console.log("[MyPDF] SSE Transport created");
 
-    const sessionId = crypto.randomUUID();
-    transports.set(sessionId, transport);
+        await mcp.connect(transport);
+        console.log("[MyPDF] MCP connected to transport");
 
-    req.on("close", () => {
-        console.log(`[MyPDF] Connection closed: ${sessionId}`);
-        transports.delete(sessionId);
-    });
+        const sessionId = crypto.randomUUID();
+        transports.set(sessionId, transport);
+        console.log(`[MyPDF] Session created: ${sessionId}`);
+
+        req.on("close", () => {
+            console.log(`[MyPDF] Connection closed: ${sessionId}`);
+            transports.delete(sessionId);
+        });
+    } catch (error) {
+        console.error("[MyPDF] SSE connection error:", error);
+        res.status(500).send("SSE connection failed");
+    }
 });
 
 app.post("/messages", async (req, res) => {
