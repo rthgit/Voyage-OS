@@ -25,9 +25,14 @@ if (!fs.existsSync(exportsDir)) fs.mkdirSync(exportsDir);
 
 app.use("/exports", express.static(exportsDir));
 
-// Static UI serving (for later)
+// Static UI serving (optional - only if built)
 const distPath = path.join(__dirname, "../mypdf_ui/dist");
-app.use(express.static(distPath));
+if (fs.existsSync(distPath)) {
+    console.log(`[MyPDF] Serving UI from: ${distPath}`);
+    app.use(express.static(distPath));
+} else {
+    console.log(`[MyPDF] UI not built - serving API only`);
+}
 
 // --- MCP Server ---
 const mcp = new McpServer({
@@ -177,14 +182,16 @@ app.post("/messages", async (req, res) => {
     }
 });
 
-// Fallback per SPA
-app.use((req, res, next) => {
-    if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/exports') && !req.path.startsWith('/sse')) {
-        res.sendFile(path.join(distPath, 'index.html'));
-    } else {
-        next();
-    }
-});
+// Fallback per SPA (only if UI is built)
+if (fs.existsSync(distPath)) {
+    app.use((req, res, next) => {
+        if (req.method === 'GET' && !req.path.startsWith('/api') && !req.path.startsWith('/exports') && !req.path.startsWith('/sse')) {
+            res.sendFile(path.join(distPath, 'index.html'));
+        } else {
+            next();
+        }
+    });
+}
 
 app.listen(PORT, () => {
     console.log(`MyPDF MCP Server running on port ${PORT}`);
