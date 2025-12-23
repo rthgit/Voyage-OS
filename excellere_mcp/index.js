@@ -8,6 +8,7 @@ import { z } from "zod";
 import crypto from "crypto";
 import ExcelJS from "exceljs";
 import fs from "fs";
+import multer from "multer";
 
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -16,11 +17,19 @@ const __dirname = path.dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 3005;
 
-// Ensure exports directory exists
+// Ensure directories exist
 const exportsDir = path.join(__dirname, "exports");
-if (!fs.existsSync(exportsDir)) {
-    fs.mkdirSync(exportsDir);
-}
+const uploadsDir = path.join(__dirname, "uploads");
+[exportsDir, uploadsDir].forEach(dir => {
+    if (!fs.existsSync(dir)) fs.mkdirSync(dir);
+});
+
+// Multer setup for uploads
+const storage = multer.diskStorage({
+    destination: (req, file, cb) => cb(null, uploadsDir),
+    filename: (req, file, cb) => cb(null, `${crypto.randomUUID()}_${file.originalname}`)
+});
+const upload = multer({ storage });
 
 const distPath = path.join(__dirname, "../excellere_ui/dist");
 console.log(`[Excellere] Serving static files from: ${distPath}`);
@@ -107,6 +116,55 @@ mcp.tool(
     }
 );
 
+// Tool: Read Spreadsheet (for AI Analysis)
+mcp.tool(
+    "read_spreadsheet",
+    {
+        file_path: z.string().describe("Il percorso o il nome del file da leggere (deve essere nella cartella uploads o exports)")
+    },
+    async ({ file_path }) => {
+        console.log(`[Excellere] Reading spreadsheet for analysis: ${file_path}`);
+
+        try {
+            // Try to find the file in uploads or exports
+            let fullPath = path.join(uploadsDir, path.basename(file_path));
+            if (!fs.existsSync(fullPath)) {
+                fullPath = path.join(exportsDir, path.basename(file_path));
+            }
+
+            if (!fs.existsSync(fullPath)) {
+                throw new Error("File non trovato.");
+            }
+
+            const workbook = new ExcelJS.Workbook();
+            await workbook.xlsx.readFile(fullPath);
+
+            const result = {};
+            workbook.eachSheet((worksheet, sheetId) => {
+                const sheetData = [];
+                worksheet.eachRow((row, rowNumber) => {
+                    sheetData.push(row.values);
+                });
+                result[worksheet.name] = sheetData;
+            });
+
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: `Dati estratti dal file:\n${JSON.stringify(result, null, 2)}`,
+                    },
+                ],
+            };
+        } catch (error) {
+            return {
+                content: [{ type: "text", text: `Errore durante la lettura: ${error.message}` }],
+                isError: true,
+            };
+        }
+    }
+);
+
 // --- SSE Transport ---
 const transports = new Map();
 
@@ -133,6 +191,22 @@ app.post("/messages", async (req, res) => {
 });
 
 // --- REST API for UI ---
+app.post("/api/upload", upload.single("file"), (req, res) => {
+    if (!req.file) return res.status(400).json({ success: false, error: "Nessun file caricato." });
+
+    const downloadUrl = process.env.RAILWAY_PUBLIC_DOMAIN
+        ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}/uploads/${req.file.filename}`
+        : `http://localhost:${PORT}/uploads/${req.file.filename}`;
+
+    res.json({
+        success: true,
+        filename: req.file.filename,
+        url: downloadUrl
+    });
+});
+
+app.use("/uploads", express.static(uploadsDir));
+
 app.post("/api/generate", async (req, res) => {
     const { filename, sheets } = req.body;
     console.log(`[API] Generating spreadsheet: ${filename}`);

@@ -19,6 +19,27 @@ const ExcellereApp = () => {
     const [isGenerating, setIsGenerating] = useState(false);
     const [result, setResult] = useState(null);
     const [activeTab, setActiveTab] = useState('create');
+    const [uploading, setUploading] = useState(false);
+
+    const handleFileUpload = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        setUploading(true);
+        const formData = new FormData();
+        formData.append('file', file);
+
+        try {
+            const response = await axios.post(`${window.location.origin}/api/upload`, formData);
+            setPrompt(`Analizza il file Excel caricato: ${response.data.filename}. Dimmi cosa contiene e suggerisci dei miglioramenti.`);
+            setActiveTab('create');
+        } catch (error) {
+            console.error("Upload error:", error);
+            alert("Errore durante l'upload del file.");
+        } finally {
+            setUploading(false);
+        }
+    };
 
     const handleGenerate = async () => {
         if (!prompt) return;
@@ -27,7 +48,7 @@ const ExcellereApp = () => {
         setResult(null);
 
         try {
-            // Logica di "comprensione" del prompt (mock per ora, in produzione lo farebbe l'LLM)
+            // Logica di "comprensione" del prompt (mock per ora)
             let data = {
                 filename: 'Documento_Generato.xlsx',
                 sheets: [{
@@ -77,7 +98,7 @@ const ExcellereApp = () => {
                 };
             }
 
-            const response = await axios.post('http://localhost:3005/api/generate', data);
+            const response = await axios.post(`${window.location.origin}/api/generate`, data);
 
             if (response.data.success) {
                 setResult({
@@ -88,7 +109,7 @@ const ExcellereApp = () => {
             }
         } catch (error) {
             console.error("Errore durante la generazione:", error);
-            alert("Errore di connessione al server Excellere. Assicurati che sia attivo sulla porta 3002.");
+            alert("Errore di connessione al server Excellere.");
         } finally {
             setIsGenerating(false);
         }
@@ -147,15 +168,14 @@ const ExcellereApp = () => {
                     >
                         Template
                     </button>
-                    <button className="text-sm font-semibold text-gray-500 hover:text-gray-800 transition-colors">
-                        Archivio
-                    </button>
                 </nav>
 
                 <div className="flex items-center gap-4">
-                    <button className="p-2 text-gray-400 hover:text-gray-600 transition-colors">
-                        <Settings className="w-5 h-5" />
-                    </button>
+                    <label className="flex items-center gap-2 bg-excel-light/10 hover:bg-excel-light/20 text-excel-light px-4 py-2 rounded-xl cursor-pointer transition-all border border-excel-light/20">
+                        <Plus className="w-4 h-4" />
+                        <span className="text-sm font-bold">{uploading ? '...' : 'Analizza File'}</span>
+                        <input type="file" className="hidden" onChange={handleFileUpload} accept=".xlsx,.xls" disabled={uploading} />
+                    </label>
                     <div className="w-8 h-8 rounded-full bg-gradient-to-tr from-excel-light to-green-400 flex items-center justify-center text-white font-bold text-xs">
                         CQ
                     </div>
@@ -182,7 +202,7 @@ const ExcellereApp = () => {
                                     <textarea
                                         value={prompt}
                                         onChange={(e) => setPrompt(e.target.value)}
-                                        placeholder="Esempio: Crea un file per il calcolo del cashflow aziendale mensile, con una tabella per le entrate, una per le uscite fisse e una per le variabili. Aggiungi una dashboard riassuntiva con grafici..."
+                                        placeholder="Esempio: Crea un file per il calcolo del cashflow aziendale mensile..."
                                         className="w-full h-40 p-4 text-gray-700 placeholder-gray-400 focus:outline-none resize-none text-lg leading-relaxed"
                                     />
                                     <div className="flex items-center justify-between mt-4 pt-4 border-t border-gray-100">
@@ -205,7 +225,7 @@ const ExcellereApp = () => {
                                             {isGenerating ? (
                                                 <>
                                                     <Loader2 className="w-5 h-5 animate-spin" />
-                                                    Generazione in corso...
+                                                    Generazione...
                                                 </>
                                             ) : (
                                                 <>
@@ -218,7 +238,7 @@ const ExcellereApp = () => {
                                 </div>
                             </div>
 
-                            {/* Status / Result */}
+                            {/* Result */}
                             <AnimatePresence>
                                 {result && (
                                     <motion.div
@@ -232,7 +252,7 @@ const ExcellereApp = () => {
                                             </div>
                                             <div>
                                                 <h3 className="font-bold text-gray-900">{result.filename}</h3>
-                                                <p className="text-sm text-gray-500">Generato con successo • {result.sheets.length} fogli inclusi</p>
+                                                <p className="text-sm text-gray-500">Generato con successo • {result.sheets.length} fogli</p>
                                             </div>
                                         </div>
                                         <button
@@ -240,7 +260,7 @@ const ExcellereApp = () => {
                                             className="bg-excel-light text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-excel-dark transition-all shadow-md"
                                         >
                                             <Download className="w-5 h-5" />
-                                            Scarica Excel
+                                            Scarica
                                         </button>
                                     </motion.div>
                                 )}
@@ -250,21 +270,21 @@ const ExcellereApp = () => {
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 pt-6">
                                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                     <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
-                                        <Zap className="w-4 h-4 text-yellow-500" /> Formule AI
+                                        <Zap className="w-4 h-4 text-yellow-500" /> Analisi AI
                                     </h4>
-                                    <p className="text-sm text-gray-500">L'AI scrive automaticamente formule complesse (VLOOKUP, Pivot, etc.) basate sulla tua descrizione.</p>
+                                    <p className="text-sm text-gray-500">Carica un file esistente e chiedi all'AI di analizzarlo o migliorarlo.</p>
                                 </div>
                                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                     <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
                                         <Layers className="w-4 h-4 text-blue-500" /> Multi-Foglio
                                     </h4>
-                                    <p className="text-sm text-gray-500">Puoi richiedere strutture complesse con più fogli collegati tra loro in un unico file.</p>
+                                    <p className="text-sm text-gray-500">Strutture complesse con più fogli collegati tra loro.</p>
                                 </div>
                                 <div className="bg-white p-6 rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
                                     <h4 className="font-bold text-gray-800 mb-2 flex items-center gap-2">
                                         <BarChart3 className="w-4 h-4 text-excel-light" /> Grafici Pronti
                                     </h4>
-                                    <p className="text-sm text-gray-500">Richiedi dashboard visive e l'AI imposterà i grafici corretti per i tuoi dati.</p>
+                                    <p className="text-sm text-gray-500">Dashboard visive con grafici automatici per i tuoi dati.</p>
                                 </div>
                             </div>
                         </motion.div>

@@ -6,6 +6,8 @@ import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { SSEServerTransport } from "@modelcontextprotocol/sdk/server/sse.js";
 import { z } from "zod";
 import crypto from "crypto";
+import PDFDocument from "pdfkit";
+import fs from "fs";
 
 // Fix for __dirname in ES modules
 const __filename = fileURLToPath(import.meta.url);
@@ -13,6 +15,14 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const PORT = process.env.PORT || 3001;
+
+// Ensure exports directory exists
+const exportsDir = path.join(__dirname, "exports");
+if (!fs.existsSync(exportsDir)) {
+    fs.mkdirSync(exportsDir);
+}
+
+app.use("/exports", express.static(exportsDir));
 
 console.log("Resolved UI Path:", path.join(__dirname, "../travel_ui/dist"));
 console.log("Resolved Index Path:", path.join(__dirname, "../travel_ui/dist/index.html"));
@@ -119,6 +129,69 @@ mcp.tool(
         title: "Get Weather Forecast",
         readOnlyHint: true,
         openWorldHint: true
+    }
+);
+
+// Tool 3: Generate Itinerary PDF
+mcp.tool(
+    "generate_itinerary_pdf",
+    {
+        title: z.string().describe("Titolo del viaggio"),
+        days: z.array(z.object({
+            day: z.number(),
+            activities: z.array(z.string()),
+            location: z.string()
+        })).describe("Lista dei giorni con attività")
+    },
+    async ({ title, days }) => {
+        console.log(`[✨ Voyage OS ✨] Generating PDF for: ${title}`);
+
+        try {
+            const doc = new PDFDocument();
+            const filename = `itinerary_${crypto.randomUUID()}.pdf`;
+            const filePath = path.join(exportsDir, filename);
+            const stream = fs.createWriteStream(filePath);
+
+            doc.pipe(stream);
+
+            // PDF Design
+            doc.fontSize(25).fillColor('#1e40af').text(title, { align: 'center' });
+            doc.moveDown();
+            doc.fontSize(12).fillColor('#4b5563').text(`Generato da Voyage OS - ${new Date().toLocaleDateString()}`, { align: 'center' });
+            doc.moveDown(2);
+
+            days.forEach(d => {
+                doc.fontSize(16).fillColor('#1e40af').text(`Giorno ${d.day}: ${d.location}`);
+                doc.moveDown(0.5);
+                d.activities.forEach(act => {
+                    doc.fontSize(12).fillColor('#1f2937').text(`• ${act}`, { indent: 20 });
+                });
+                doc.moveDown();
+            });
+
+            doc.end();
+
+            // Wait for stream to finish
+            await new Promise(resolve => stream.on('finish', resolve));
+
+            const downloadUrl = process.env.RAILWAY_PUBLIC_DOMAIN
+                ? `https://${process.env.RAILWAY_PUBLIC_DOMAIN}/exports/${filename}`
+                : `http://localhost:${PORT}/exports/${filename}`;
+
+            return {
+                content: [
+                    {
+                        type: "text",
+                        text: `Itinerario PDF generato con successo!\nLink per il download: ${downloadUrl}`,
+                    },
+                ],
+            };
+        } catch (error) {
+            return {
+                content: [{ type: "text", text: `Errore PDF: ${error.message}` }],
+                isError: true,
+            };
+        }
     }
 );
 

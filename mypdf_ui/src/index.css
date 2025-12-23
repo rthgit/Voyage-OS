@@ -1,0 +1,17 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    body {
+        @apply bg-pdf-bg text-gray-900;
+    }
+}
+
+.glass-card {
+    @apply bg-white/80 backdrop-blur-md border border-white/20;
+}
+
+.doc-shadow {
+    box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+}

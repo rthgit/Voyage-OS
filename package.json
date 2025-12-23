@@ -3,13 +3,15 @@
     "version": "1.0.0",
     "private": true,
     "scripts": {
-        "postinstall": "npm run install:voyage && npm run install:excellere && npm run build:all",
-        "build:all": "cd travel_ui && npm run build && cd ../excellere_ui && npm run build",
+        "postinstall": "npm run install:voyage && npm run install:excellere && npm run install:mypdf && npm run build:all",
+        "build:all": "cd travel_ui && npm run build && cd ../excellere_ui && npm run build && cd ../mypdf_ui && npm run build",
         "start": "node start.js",
         "start:voyage": "cd travel_mcp && node index.js",
         "start:excellere": "cd excellere_mcp && node index.js",
+        "start:mypdf": "cd mypdf_mcp && node index.js",
         "install:voyage": "cd travel_mcp && npm install && cd ../travel_ui && npm install",
-        "install:excellere": "cd excellere_mcp && npm install && cd ../excellere_ui && npm install"
+        "install:excellere": "cd excellere_mcp && npm install && cd ../excellere_ui && npm install",
+        "install:mypdf": "cd mypdf_mcp && npm install && cd ../mypdf_ui && npm install"
     },
     "engines": {
         "node": "18.x"
